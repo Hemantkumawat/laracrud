@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LocationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::resource('users', HomeController::class);
 Route::get('/', [HomeController::class, 'index']);
+Route::get('country-state-city', [LocationController::class, 'index']);
+Route::post('get-states-by-country', [LocationController::class, 'getState']);
+Route::post('get-cities-by-state', [LocationController::class, 'getCity']);
+

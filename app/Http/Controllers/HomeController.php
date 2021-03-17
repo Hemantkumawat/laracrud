@@ -3,16 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
+use App\Services\LocationService;
 use App\Services\UserService;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    protected $userService;
+    protected $userService, $locationService;
 
-    public function __construct(UserService $userService)
+    public function __construct(UserService $userService, LocationService $locationService)
     {
         $this->userService = $userService;
+        $this->locationService = $locationService;
     }
 
     /**
@@ -34,7 +36,8 @@ class HomeController extends Controller
     public function create()
     {
         $locations = config('locations');
-        return view('users.create', compact('locations'));
+        $countries = $this->locationService->getCountryNameId();
+        return view('users.create', compact('locations', 'countries'));
     }
 
     /**
@@ -71,7 +74,8 @@ class HomeController extends Controller
     {
         $user = $this->userService->getById($id);
         $locations = config('locations');
-        return view('users.edit', compact('user','locations'));
+        $countries = $this->locationService->getCountryNameId();
+        return view('users.edit', compact('user', 'locations', 'countries'));
     }
 
     /**
@@ -83,7 +87,7 @@ class HomeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->userService->update($request,$id);
+        $this->userService->update($request, $id);
         return redirect()->route('users.index')->with('success', 'User updated successfully.');
     }
 

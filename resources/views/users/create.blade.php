@@ -16,7 +16,7 @@
         @csrf
         @method('POST')
         <div class="row">
-            @include('users.partials.form',['editMode'=>true])
+            @include('users.partials.form',['editMode'=>false])
             <div class="col-md-12 text-end">
                 <button class="btn btn-success">Create</button>
             </div>

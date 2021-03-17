@@ -58,8 +58,7 @@
     <div class="input_fields_wrap">
         <label for="hobbies" class="form-label">Hobbies</label>
         <button class="add_field_button btn btn-success btn-sm float-end"><i class="fa fa-plus"></i></button>
-
-        @if(isset($editMode))
+        @if($editMode)
             @foreach($user->hobbies as $hobby)
                 @if($loop->first)
                     <div class="mb-3">
@@ -87,26 +86,52 @@
     @enderror
 </div>
 <div class="col-md-6 mb-3">
-    <label for="location" class="form-label">Location <span>*</span></label>
-    {{--{!! Form::select('location', $locations, 'india', ['class'=>'form-control','placeholder' => 'Select location']) !!}--}}
-    <select name="location" id="location" class="form-control">
-        @foreach($locations as $country=>$states)
-            <optgroup label="{{ ucfirst($country) }}">
-                @foreach($states as $state=>$cities)
-                    <optgroup label="{{ ucfirst($state) }}">
-                        @foreach($cities as $city)
-                            <option value="{{ $country.','.$state.','.$city }}">
-                                {{ ucfirst($city) }}
-                            </option>
-                        @endforeach
-                    </optgroup>
+    <div class="form-group">
+        <label for="country-dropdown">Country</label>
+        <select class="form-control" id="country-dropdown" name="country_id">
+            <option value="">Select Country</option>
+            @foreach ($countries as $country)
+                @if($editMode)
+                    <option
+                        value="{{$country->id}}" {{ ($country->id == $user->city->state->country_id||old('country_id')==$country->id)?'selected':null }}>
+                        {{$country->name}}
+                    </option>
+                @else
+                    <option
+                        value="{{$country->id}}" {{ old('country_id')==$country->id?'selected':null }}>
+                        {{$country->name}}
+                    </option>
+                @endif
+            @endforeach
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="state-dropdown">State</label>
+        <select class="form-control" id="state-dropdown" name="state_id">
+            @if($editMode && $user->city != null)
+                @foreach($user->city->state->country->states as $state)
+                    <option value="{{ $state->id }}" {{ $state->id == $user->city->state_id?'selected':null }}>
+                        {{ $state->name }}
+                    </option>
                 @endforeach
-            </optgroup>
-        @endforeach
-    </select>
-    @error('location')
-    <div class="text-danger">{{ $message }}</div>
-    @enderror
+            @endif
+        </select>
+    </div>
+    <div class="form-group">
+        <label for="city-dropdown">City</label>
+        <select class="form-control" id="city-dropdown" name="city_id">
+            @if($editMode && $user->city != null)
+                @foreach($user->city->state->cities as $city)
+                    <option value="{{ $city->id }}" {{ ($user->city_id == $city->id|| old('city_id')==$city->id)?'selected':null }}>
+                        {{ $city->name }}
+                    </option>
+                @endforeach
+            @endif
+        </select>
+        @error('city_id')
+        <div class="text-danger">{{ $message }}</div>
+        @enderror
+    </div>
 </div>
 <div class="col-md-6 mb-3">
     <label for="status" class="form-label">Status <span>*</span></label>
@@ -117,6 +142,17 @@
 </div>
 @section('scripts')
     <script>
+        var editMode = '{{ $editMode }}';
+        const getStateByCountryUrl = '{{ url('get-states-by-country') }}';
+        const getCitiesByStateUrl = "{{url('get-cities-by-state')}}";
+    </script>
+    <script src="{{ asset('modules/location.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            if (editMode == true) {
+
+            }
+        });
         var max_fields = 10; //maximum input boxes allowed
         var wrapper = $(".input_fields_wrap"); //Fields wrapper
         var add_button = $(".add_field_button"); //Add button ID

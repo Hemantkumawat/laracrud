@@ -17,25 +17,13 @@ class UserService
 
     public function store(Request $request)
     {
-        $requestData = $request->except(['_token', 'location']);
-        if (isset($request->location)) {
-            $location = explode(',', $request->location);
-            $requestData['country'] = $location[0];
-            $requestData['state'] = $location[1];
-            $requestData['city'] = $location[2];
-        }
+        $requestData = $request->except(['_token']);
         return User::query()->create($requestData);
     }
 
     public function update(Request $request, $id)
     {
-        $requestData = $request->except(['_token', 'location']);
-        if (isset($request->location)) {
-            $location = explode(',', $request->location);
-            $requestData['country'] = $location[0];
-            $requestData['state'] = $location[1];
-            $requestData['city'] = $location[2];
-        }
+        $requestData = $request->except(['_token']);
         return User::query()->findOrFail($id)->update($requestData);
     }
 

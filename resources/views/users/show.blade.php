@@ -65,7 +65,7 @@
                         Country
                     </dt>
                     <dd class="col-md-8">
-                        {{ ucfirst($user->country) }}
+                        {{ ucfirst($user->city->state->country->name) }}
                     </dd>
                 </dl>
                 <dl class="row">
@@ -73,7 +73,7 @@
                         State
                     </dt>
                     <dd class="col-md-8">
-                        {{ ucfirst($user->state) }}
+                        {{ ucfirst($user->city->state->name) }}
                     </dd>
                 </dl>
                 <dl class="row">
@@ -81,7 +81,7 @@
                         City
                     </dt>
                     <dd class="col-md-8">
-                        {{ ucfirst($user->city) }}
+                        {{ ucfirst($user->city->name) }}
                     </dd>
                 </dl>
                 <dl class="row">

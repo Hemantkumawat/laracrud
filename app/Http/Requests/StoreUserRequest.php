@@ -27,7 +27,7 @@ class StoreUserRequest extends FormRequest
             'first_name' => 'required',
             'last_name' => 'required',
             'dob' => 'required|date',
-            'location' => 'required',
+            'city_id' => 'required',
             'status' => 'required'
         ];
     }

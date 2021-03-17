@@ -26,9 +26,7 @@ class User extends Authenticatable
         'address',
         'gender',
         'hobbies',
-        'country',
-        'state',
-        'city',
+        'city_id',
         'status',
         'created_at',
         'updated_at',
@@ -61,4 +59,9 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'hobbies' => 'array'
     ];
+
+    public function city()
+    {
+        return $this->belongsTo(City::class, 'city_id', 'id');
+    }
 }
